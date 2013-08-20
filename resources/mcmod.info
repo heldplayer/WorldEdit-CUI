@@ -1,0 +1,13 @@
+[
+{
+  "modid" : "WorldEdit-CUI",
+  "name" : "WorldEdit-CUI",
+  "version" : "@VERSION@",
+  "authors": [
+    "heldplayer"
+  ],
+  "updateUrl" : "",
+  "url" : "",
+  "parent" : ""
+}
+]
