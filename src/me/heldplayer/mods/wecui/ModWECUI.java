@@ -1,8 +1,6 @@
 
 package me.heldplayer.mods.wecui;
 
-import java.io.File;
-
 import me.heldplayer.util.HeldCore.HeldCoreMod;
 import me.heldplayer.util.HeldCore.HeldCoreProxy;
 import me.heldplayer.util.HeldCore.ModInfo;
@@ -15,9 +13,10 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 
 @Mod(modid = Objects.MOD_ID, name = Objects.MOD_NAME, version = Objects.MOD_VERSION)
-@NetworkMod(clientSideRequired = false, serverSideRequired = false)
+@NetworkMod(clientSideRequired = false, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { Objects.MOD_CHANNEL }, packetHandler = PacketHandler.class))
 public class ModWECUI extends HeldCoreMod {
 
     @Instance(value = Objects.MOD_ID)
@@ -31,12 +30,6 @@ public class ModWECUI extends HeldCoreMod {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        File file = new File(event.getModConfigurationDirectory(), "HeldCore");
-
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-
         Objects.log = event.getModLog();
 
         // Config
