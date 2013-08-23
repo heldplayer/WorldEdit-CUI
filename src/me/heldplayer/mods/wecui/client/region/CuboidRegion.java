@@ -1,6 +1,8 @@
 
 package me.heldplayer.mods.wecui.client.region;
 
+import me.heldplayer.mods.wecui.ModWECUI;
+import me.heldplayer.mods.wecui.client.Color;
 import me.heldplayer.util.HeldCore.client.RenderHelper;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
@@ -12,116 +14,81 @@ public class CuboidRegion extends Region {
     private Point first;
     private Point second;
 
-    public float red;
-    public float green;
-    public float blue;
-
-    public float gridRed;
-    public float gridGreen;
-    public float gridBlue;
+    public Color outline;
+    public Color grid;
 
     public CuboidRegion() {
         this.first = new Point();
-        this.first.red = 0.2F;
-        this.first.green = 0.8F;
-        this.first.blue = 0.2F;
+        this.first.color = ModWECUI.colorCuboidPoint1.getValue();
 
         this.second = new Point();
-        this.second.red = 0.2F;
-        this.second.green = 0.2F;
-        this.second.blue = 0.8F;
+        this.second.color = ModWECUI.colorCuboidPoint2.getValue();
 
-        this.red = 0.8F;
-        this.green = 0.3F;
-        this.blue = 0.3F;
-
-        this.gridRed = 0.8F;
-        this.gridGreen = 0.2F;
-        this.gridBlue = 0.2F;
+        this.outline = ModWECUI.colorCuboidOutline.getValue();
+        this.grid = ModWECUI.colorCuboidGrid.getValue();
     }
 
     @Override
-    public void render() {
-        this.first.render();
-        this.second.render();
+    public void render(float opacity, double offsetX, double offsetY, double offsetZ) {
+        this.first.render(opacity, offsetX, offsetY, offsetZ);
+        this.second.render(opacity, offsetX, offsetY, offsetZ);
 
         if (this.first.isValid() && this.second.isValid()) {
-            double offset = 0.03D;
+            GL11.glColor4f(this.outline.red, this.outline.green, this.outline.blue, opacity);
+            renderOutline(offsetX, offsetY, offsetZ);
 
-            int minX = this.first.coord.posX < this.second.coord.posX ? this.first.coord.posX : this.second.coord.posX;
-            int minY = this.first.coord.posY < this.second.coord.posY ? this.first.coord.posY : this.second.coord.posY;
-            int minZ = this.first.coord.posZ < this.second.coord.posZ ? this.first.coord.posZ : this.second.coord.posZ;
-            int maxX = this.first.coord.posX > this.second.coord.posX ? this.first.coord.posX + 1 : this.second.coord.posX + 1;
-            int maxY = this.first.coord.posY > this.second.coord.posY ? this.first.coord.posY + 1 : this.second.coord.posY + 1;
-            int maxZ = this.first.coord.posZ > this.second.coord.posZ ? this.first.coord.posZ + 1 : this.second.coord.posZ + 1;
-            AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox((double) minX, (double) minY, (double) minZ, (double) maxX, (double) maxY, (double) maxZ).expand(offset, offset, offset);
+            GL11.glColor4f(this.grid.red, this.grid.green, this.grid.blue, opacity);
+            renderGrid(offsetX, offsetY, offsetZ);
+        }
+    }
 
-            GL11.glLineWidth(3.0F);
-            GL11.glDepthFunc(GL11.GL_GEQUAL);
-            GL11.glColor4f(this.red, this.green, this.blue, 0.2F);
-            RenderHelper.drawBox(aabb);
-            GL11.glDepthFunc(GL11.GL_LESS);
-            GL11.glColor4f(this.red, this.green, this.blue, 0.8F);
-            RenderHelper.drawBox(aabb);
+    private void renderOutline(double offsetX, double offsetY, double offsetZ) {
+        double offset = 0.03D;
 
-            GL11.glLineWidth(3.0F);
-            for (int x = minX + 1; x < maxX; x++) {
-                GL11.glDepthFunc(GL11.GL_GEQUAL);
-                GL11.glColor4f(this.gridRed, this.gridGreen, this.gridBlue, 0.2F);
-                GL11.glBegin(GL11.GL_LINE_LOOP);
-                GL11.glVertex3d((double) x, (double) minY - offset, (double) minZ - offset);
-                GL11.glVertex3d((double) x, (double) minY - offset, (double) maxZ + offset);
-                GL11.glVertex3d((double) x, (double) maxY + offset, (double) maxZ + offset);
-                GL11.glVertex3d((double) x, (double) maxY + offset, (double) minZ - offset);
-                GL11.glEnd();
+        int minX = this.first.coord.posX < this.second.coord.posX ? this.first.coord.posX : this.second.coord.posX;
+        int minY = this.first.coord.posY < this.second.coord.posY ? this.first.coord.posY : this.second.coord.posY;
+        int minZ = this.first.coord.posZ < this.second.coord.posZ ? this.first.coord.posZ : this.second.coord.posZ;
+        int maxX = this.first.coord.posX > this.second.coord.posX ? this.first.coord.posX + 1 : this.second.coord.posX + 1;
+        int maxY = this.first.coord.posY > this.second.coord.posY ? this.first.coord.posY + 1 : this.second.coord.posY + 1;
+        int maxZ = this.first.coord.posZ > this.second.coord.posZ ? this.first.coord.posZ + 1 : this.second.coord.posZ + 1;
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox((double) minX, (double) minY, (double) minZ, (double) maxX, (double) maxY, (double) maxZ).expand(offset, offset, offset).offset(-offsetX, -offsetY, -offsetZ);
 
-                GL11.glDepthFunc(GL11.GL_LESS);
-                GL11.glColor4f(this.gridRed, this.gridGreen, this.gridBlue, 0.8F);
-                GL11.glBegin(GL11.GL_LINE_LOOP);
-                GL11.glVertex3d((double) x, (double) minY - offset, (double) minZ - offset);
-                GL11.glVertex3d((double) x, (double) minY - offset, (double) maxZ + offset);
-                GL11.glVertex3d((double) x, (double) maxY + offset, (double) maxZ + offset);
-                GL11.glVertex3d((double) x, (double) maxY + offset, (double) minZ - offset);
-                GL11.glEnd();
-            }
-            for (int y = minY + 1; y < maxY; y++) {
-                GL11.glDepthFunc(GL11.GL_GEQUAL);
-                GL11.glColor4f(this.gridRed, this.gridGreen, this.gridBlue, 0.2F);
-                GL11.glBegin(GL11.GL_LINE_LOOP);
-                GL11.glVertex3d((double) minX - offset, y, (double) minZ - offset);
-                GL11.glVertex3d((double) minX - offset, y, (double) maxZ + offset);
-                GL11.glVertex3d((double) maxX + offset, y, (double) maxZ + offset);
-                GL11.glVertex3d((double) maxX + offset, y, (double) minZ - offset);
-                GL11.glEnd();
+        RenderHelper.drawBox(aabb);
+    }
 
-                GL11.glDepthFunc(GL11.GL_LESS);
-                GL11.glColor4f(this.gridRed, this.gridGreen, this.gridBlue, 0.8F);
-                GL11.glBegin(GL11.GL_LINE_LOOP);
-                GL11.glVertex3d((double) minX - offset, y, (double) minZ - offset);
-                GL11.glVertex3d((double) minX - offset, y, (double) maxZ + offset);
-                GL11.glVertex3d((double) maxX + offset, y, (double) maxZ + offset);
-                GL11.glVertex3d((double) maxX + offset, y, (double) minZ - offset);
-                GL11.glEnd();
-            }
-            for (int z = minZ + 1; z < maxZ; z++) {
-                GL11.glDepthFunc(GL11.GL_GEQUAL);
-                GL11.glColor4f(this.gridRed, this.gridGreen, this.gridBlue, 0.2F);
-                GL11.glBegin(GL11.GL_LINE_LOOP);
-                GL11.glVertex3d((double) minX - offset, (double) minY - offset, z);
-                GL11.glVertex3d((double) maxX + offset, (double) minY - offset, z);
-                GL11.glVertex3d((double) maxX + offset, (double) maxY + offset, z);
-                GL11.glVertex3d((double) minX - offset, (double) maxY + offset, z);
-                GL11.glEnd();
+    private void renderGrid(double offsetX, double offsetY, double offsetZ) {
+        double offset = 0.03D;
 
-                GL11.glDepthFunc(GL11.GL_LESS);
-                GL11.glColor4f(this.gridRed, this.gridGreen, this.gridBlue, 0.8F);
-                GL11.glBegin(GL11.GL_LINE_LOOP);
-                GL11.glVertex3d((double) minX - offset, (double) minY - offset, z);
-                GL11.glVertex3d((double) maxX + offset, (double) minY - offset, z);
-                GL11.glVertex3d((double) maxX + offset, (double) maxY + offset, z);
-                GL11.glVertex3d((double) minX - offset, (double) maxY + offset, z);
-                GL11.glEnd();
-            }
+        int minX = this.first.coord.posX < this.second.coord.posX ? this.first.coord.posX : this.second.coord.posX;
+        int minY = this.first.coord.posY < this.second.coord.posY ? this.first.coord.posY : this.second.coord.posY;
+        int minZ = this.first.coord.posZ < this.second.coord.posZ ? this.first.coord.posZ : this.second.coord.posZ;
+        int maxX = this.first.coord.posX > this.second.coord.posX ? this.first.coord.posX + 1 : this.second.coord.posX + 1;
+        int maxY = this.first.coord.posY > this.second.coord.posY ? this.first.coord.posY + 1 : this.second.coord.posY + 1;
+        int maxZ = this.first.coord.posZ > this.second.coord.posZ ? this.first.coord.posZ + 1 : this.second.coord.posZ + 1;
+
+        for (int x = minX + 1; x < maxX; x++) {
+            GL11.glBegin(GL11.GL_LINE_LOOP);
+            GL11.glVertex3d((double) x - offsetX, (double) minY - offset - offsetY, (double) minZ - offset - offsetZ);
+            GL11.glVertex3d((double) x - offsetX, (double) minY - offset - offsetY, (double) maxZ + offset - offsetZ);
+            GL11.glVertex3d((double) x - offsetX, (double) maxY + offset - offsetY, (double) maxZ + offset - offsetZ);
+            GL11.glVertex3d((double) x - offsetX, (double) maxY + offset - offsetY, (double) minZ - offset - offsetZ);
+            GL11.glEnd();
+        }
+        for (int y = minY + 1; y < maxY; y++) {
+            GL11.glBegin(GL11.GL_LINE_LOOP);
+            GL11.glVertex3d((double) minX - offset - offsetX, y - offsetY, (double) minZ - offset - offsetZ);
+            GL11.glVertex3d((double) minX - offset - offsetX, y - offsetY, (double) maxZ + offset - offsetZ);
+            GL11.glVertex3d((double) maxX + offset - offsetX, y - offsetY, (double) maxZ + offset - offsetZ);
+            GL11.glVertex3d((double) maxX + offset - offsetX, y - offsetY, (double) minZ - offset - offsetZ);
+            GL11.glEnd();
+        }
+        for (int z = minZ + 1; z < maxZ; z++) {
+            GL11.glBegin(GL11.GL_LINE_LOOP);
+            GL11.glVertex3d((double) minX - offset - offsetX, (double) minY - offset - offsetY, z - offsetZ);
+            GL11.glVertex3d((double) maxX + offset - offsetX, (double) minY - offset - offsetY, z - offsetZ);
+            GL11.glVertex3d((double) maxX + offset - offsetX, (double) maxY + offset - offsetY, z - offsetZ);
+            GL11.glVertex3d((double) minX - offset - offsetX, (double) maxY + offset - offsetY, z - offsetZ);
+            GL11.glEnd();
         }
     }
 

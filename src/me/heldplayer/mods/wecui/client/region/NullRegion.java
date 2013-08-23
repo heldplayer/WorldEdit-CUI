@@ -4,7 +4,7 @@ package me.heldplayer.mods.wecui.client.region;
 public class NullRegion extends Region {
 
     @Override
-    public void render() {}
+    public void render(float opacity, double offsetX, double offsetY, double offsetZ) {}
 
     @Override
     public void setPoint(int id, int x, int y, int z) {}

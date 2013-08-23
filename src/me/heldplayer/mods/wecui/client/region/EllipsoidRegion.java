@@ -1,6 +1,9 @@
 
 package me.heldplayer.mods.wecui.client.region;
 
+import me.heldplayer.mods.wecui.ModWECUI;
+import me.heldplayer.mods.wecui.client.Color;
+import me.heldplayer.util.HeldCore.MathHelper;
 import net.minecraft.util.ChunkCoordinates;
 
 import org.lwjgl.opengl.GL11;
@@ -12,48 +15,24 @@ public class EllipsoidRegion extends Region {
     private double radiusY;
     private double radiusZ;
 
-    public float red;
-    public float green;
-    public float blue;
-
-    public float gridRed;
-    public float gridGreen;
-    public float gridBlue;
+    public Color grid;
 
     public EllipsoidRegion() {
         this.center = new Point();
-        this.center.red = 0.8F;
-        this.center.green = 0.8F;
-        this.center.blue = 0.2F;
+        this.center.color = ModWECUI.colorEllipsoidCenter.getValue();
 
-        this.red = 0.8F;
-        this.green = 0.3F;
-        this.blue = 0.3F;
-
-        this.gridRed = 0.8F;
-        this.gridGreen = 0.2F;
-        this.gridBlue = 0.2F;
+        this.grid = ModWECUI.colorEllipsoidGrid.getValue();
     }
 
     @Override
-    public void render() {
-        this.center.render();
+    public void render(float opacity, double offsetX, double offsetY, double offsetZ) {
+        this.center.render(opacity, offsetX, offsetY, offsetZ);
 
         if (this.center.isValid()) {
-            GL11.glTranslated(0.5D, 0.5D, 0.5D);
-
-            GL11.glLineWidth(3.0F);
-            GL11.glDepthFunc(GL11.GL_GEQUAL);
-            GL11.glColor4f(this.red, this.green, this.blue, 0.2F);
-            this.drawXZPlane();
-            this.drawYZPlane();
-            this.drawXYPlane();
-
-            GL11.glDepthFunc(GL11.GL_LESS);
-            GL11.glColor4f(this.red, this.green, this.blue, 0.8F);
-            this.drawXZPlane();
-            this.drawYZPlane();
-            this.drawXYPlane();
+            GL11.glColor4f(this.grid.red, this.grid.green, this.grid.blue, opacity);
+            this.drawXZPlane(offsetX - 0.5D, offsetY - 0.5D, offsetZ - 0.5D);
+            this.drawYZPlane(offsetX - 0.5D, offsetY - 0.5D, offsetZ - 0.5D);
+            this.drawXYPlane(offsetX - 0.5D, offsetY - 0.5D, offsetZ - 0.5D);
         }
     }
 
@@ -81,91 +60,50 @@ public class EllipsoidRegion extends Region {
     @Override
     public void setMinMax(int min, int max) {}
 
-    private void drawXZPlane() {
-        int yRad = (int) Math.floor(this.radiusY);
-        for (int yBlock = -yRad; yBlock < yRad; yBlock++) {
+    private void drawXZPlane(double offsetX, double offsetY, double offsetZ) {
+        int radiusY = net.minecraft.util.MathHelper.ceiling_double_int(this.radiusY);
+        for (int y = -radiusY; y < radiusY; y++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
+            for (int i = 0; i <= 90; i++) {
+                float angle = (float) i * 4.0F / 90.0F;
+                double x = this.radiusX * MathHelper.cos(angle) * Math.cos(Math.asin(y / this.radiusY));
+                double z = this.radiusZ * MathHelper.sin(angle) * Math.cos(Math.asin(y / this.radiusY));
 
-            for (int i = 0; i <= 40; i++) {
-                double tempTheta = i * 6.283185307179586D / 40.0D;
-                double tempX = this.radiusX * Math.cos(tempTheta) * Math.cos(Math.asin(yBlock / this.radiusY));
-                double tempZ = this.radiusZ * Math.sin(tempTheta) * Math.cos(Math.asin(yBlock / this.radiusY));
-
-                GL11.glVertex3d(this.center.coord.posX + tempX, this.center.coord.posY + yBlock, this.center.coord.posZ + tempZ);
+                GL11.glVertex3d(this.center.coord.posX + x - offsetX, this.center.coord.posY + y - offsetY, this.center.coord.posZ + z - offsetZ);
             }
-
             GL11.glEnd();
         }
-
-        GL11.glBegin(GL11.GL_LINE_LOOP);
-
-        for (int i = 0; i <= 40; i++) {
-            double tempTheta = i * 6.283185307179586D / 40.0D;
-            double tempX = this.radiusX * Math.cos(tempTheta);
-            double tempZ = this.radiusZ * Math.sin(tempTheta);
-
-            GL11.glVertex3d(this.center.coord.posX + tempX, this.center.coord.posY, this.center.coord.posZ + tempZ);
-        }
-
-        GL11.glEnd();
     }
 
-    private void drawYZPlane() {
-        int xRad = (int) Math.floor(this.radiusX);
-        for (int xBlock = -xRad; xBlock < xRad; xBlock++) {
+    private void drawYZPlane(double offsetX, double offsetY, double offsetZ) {
+        int radiusX = net.minecraft.util.MathHelper.ceiling_double_int(this.radiusX);
+        for (int x = -radiusX; x < radiusX; x++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
+            for (int i = 0; i <= 90; i++) {
+                float angle = (float) i * 4.0F / 90.0F;
+                double y = this.radiusY * MathHelper.cos(angle) * Math.sin(Math.acos(x / this.radiusX));
+                double z = this.radiusZ * MathHelper.sin(angle) * Math.sin(Math.acos(x / this.radiusX));
 
-            for (int i = 0; i <= 40; i++) {
-                double tempTheta = i * 6.283185307179586D / 40.0D;
-                double tempY = this.radiusY * Math.cos(tempTheta) * Math.sin(Math.acos(xBlock / this.radiusX));
-                double tempZ = this.radiusZ * Math.sin(tempTheta) * Math.sin(Math.acos(xBlock / this.radiusX));
-
-                GL11.glVertex3d(this.center.coord.posX + xBlock, this.center.coord.posY + tempY, this.center.coord.posZ + tempZ);
+                GL11.glVertex3d(this.center.coord.posX + x - offsetX, this.center.coord.posY + y - offsetY, this.center.coord.posZ + z - offsetZ);
             }
-
             GL11.glEnd();
         }
-
-        GL11.glBegin(GL11.GL_LINE_LOOP);
-
-        for (int i = 0; i <= 40; i++) {
-            double tempTheta = i * 6.283185307179586D / 40.0D;
-            double tempY = this.radiusY * Math.cos(tempTheta);
-            double tempZ = this.radiusZ * Math.sin(tempTheta);
-
-            GL11.glVertex3d(this.center.coord.posX, this.center.coord.posY + tempY, this.center.coord.posZ + tempZ);
-        }
-
-        GL11.glEnd();
     }
 
-    private void drawXYPlane() {
-        int zRad = (int) Math.floor(this.radiusZ);
-        for (int zBlock = -zRad; zBlock < zRad; zBlock++) {
+    private void drawXYPlane(double offsetX, double offsetY, double offsetZ) {
+        int radiusZ = net.minecraft.util.MathHelper.ceiling_double_int(this.radiusZ);
+        for (int z = -radiusZ; z < radiusZ; z++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
+            for (int i = 0; i <= 90; i++) {
+                float angle = (float) i * 4.0F / 90.0F;
+                double x = this.radiusX * MathHelper.sin(angle) * Math.sin(Math.acos(z / this.radiusZ));
+                double y = this.radiusY * MathHelper.cos(angle) * Math.sin(Math.acos(z / this.radiusZ));
 
-            for (int i = 0; i <= 40; i++) {
-                double tempTheta = i * 6.283185307179586D / 40.0D;
-                double tempX = this.radiusX * Math.sin(tempTheta) * Math.sin(Math.acos(zBlock / this.radiusZ));
-                double tempY = this.radiusY * Math.cos(tempTheta) * Math.sin(Math.acos(zBlock / this.radiusZ));
-
-                GL11.glVertex3d(this.center.coord.posX + tempX, this.center.coord.posY + tempY, this.center.coord.posZ + zBlock);
+                GL11.glVertex3d(this.center.coord.posX + x - offsetX, this.center.coord.posY + y - offsetY, this.center.coord.posZ + z - offsetZ);
             }
 
             GL11.glEnd();
         }
-
-        GL11.glBegin(GL11.GL_LINE_LOOP);
-
-        for (int i = 0; i <= 40; i++) {
-            double tempTheta = i * 6.283185307179586D / 40.0D;
-            double tempX = this.radiusX * Math.cos(tempTheta);
-            double tempY = this.radiusY * Math.sin(tempTheta);
-
-            GL11.glVertex3d(this.center.coord.posX + tempX, this.center.coord.posY + tempY, this.center.coord.posZ);
-        }
-
-        GL11.glEnd();
     }
 
 }

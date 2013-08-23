@@ -3,6 +3,8 @@ package me.heldplayer.mods.wecui.client.region;
 
 import java.util.ArrayList;
 
+import me.heldplayer.mods.wecui.ModWECUI;
+import me.heldplayer.mods.wecui.client.Color;
 import net.minecraft.util.ChunkCoordinates;
 
 import org.lwjgl.opengl.GL11;
@@ -13,93 +15,57 @@ public class PolygonRegion extends Region {
     protected int min;
     protected int max;
 
-    public float red;
-    public float green;
-    public float blue;
-
-    public float gridRed;
-    public float gridGreen;
-    public float gridBlue;
+    public Color outline;
+    public Color grid;
 
     public PolygonRegion() {
         this.points = new ArrayList<PointPoly>();
 
-        this.red = 0.8F;
-        this.green = 0.3F;
-        this.blue = 0.3F;
-
-        this.gridRed = 0.8F;
-        this.gridGreen = 0.2F;
-        this.gridBlue = 0.2F;
+        this.outline = ModWECUI.colorPolygonOutline.getValue();
+        this.grid = ModWECUI.colorPolygonGrid.getValue();
     }
 
     @Override
-    public void render() {
+    public void render(float opacity, double offsetX, double offsetY, double offsetZ) {
+
+        for (PointPoly point : this.points) {
+            if (point != null) {
+                point.render(opacity, offsetX, offsetY, offsetZ);
+            }
+        }
+
+        GL11.glColor4f(this.outline.red, this.outline.green, this.outline.blue, opacity);
+        renderOutline(offsetX, offsetY, offsetZ);
+
+        GL11.glColor4f(this.grid.red, this.grid.green, this.grid.blue, opacity);
+        renderGrid(offsetX, offsetY, offsetZ);
+    }
+
+    private void renderOutline(double offsetX, double offsetY, double offsetZ) {
         double offset = 0.03D;
-
-        for (PointPoly point : this.points) {
-            if (point != null) {
-                point.render();
-            }
-        }
-
-        GL11.glDepthFunc(GL11.GL_GEQUAL);
-        GL11.glColor4f(this.red, this.green, this.blue, 0.2F);
         GL11.glBegin(GL11.GL_LINE_LOOP);
         for (PointPoly point : this.points) {
             if (point != null) {
-                GL11.glVertex3d((double) point.coord.posX + 0.5D, this.min - offset, (double) point.coord.posZ + 0.5D);
+                GL11.glVertex3d((double) point.coord.posX + 0.5D - offsetX, this.min - offset - offsetY, (double) point.coord.posZ + 0.5D - offsetZ);
             }
         }
         GL11.glEnd();
 
-        GL11.glDepthFunc(GL11.GL_LESS);
-        GL11.glColor4f(this.red, this.green, this.blue, 0.8F);
         GL11.glBegin(GL11.GL_LINE_LOOP);
         for (PointPoly point : this.points) {
             if (point != null) {
-                GL11.glVertex3d((double) point.coord.posX + 0.5D, this.min - offset, (double) point.coord.posZ + 0.5D);
+                GL11.glVertex3d((double) point.coord.posX + 0.5D - offsetX, this.max + 1.0D + offset - offsetY, (double) point.coord.posZ + 0.5D - offsetZ);
             }
         }
         GL11.glEnd();
+    }
 
-        GL11.glDepthFunc(GL11.GL_GEQUAL);
-        GL11.glColor4f(this.red, this.green, this.blue, 0.2F);
-        GL11.glBegin(GL11.GL_LINE_LOOP);
-        for (PointPoly point : this.points) {
-            if (point != null) {
-                GL11.glVertex3d((double) point.coord.posX + 0.5D, this.max + 1.0D + offset, (double) point.coord.posZ + 0.5D);
-            }
-        }
-        GL11.glEnd();
-
-        GL11.glDepthFunc(GL11.GL_LESS);
-        GL11.glColor4f(this.red, this.green, this.blue, 0.8F);
-        GL11.glBegin(GL11.GL_LINE_LOOP);
-        for (PointPoly point : this.points) {
-            if (point != null) {
-                GL11.glVertex3d((double) point.coord.posX + 0.5D, this.max + 1.0D + offset, (double) point.coord.posZ + 0.5D);
-            }
-        }
-        GL11.glEnd();
-
+    private void renderGrid(double offsetX, double offsetY, double offsetZ) {
         for (int y = this.min; y < this.max; y++) {
-            GL11.glDepthFunc(GL11.GL_GEQUAL);
-            GL11.glColor4f(this.gridRed, this.gridGreen, this.gridBlue, 0.2F);
             GL11.glBegin(GL11.GL_LINE_LOOP);
             for (PointPoly point : this.points) {
                 if (point != null) {
-                    GL11.glVertex3d((double) point.coord.posX + 0.5D, (double) y + 1.0D, (double) point.coord.posZ + 0.5D);
-                }
-            }
-            GL11.glEnd();
-
-            GL11.glDepthFunc(GL11.GL_LESS);
-            GL11.glColor4f(this.gridRed, this.gridGreen, this.gridBlue, 0.8F);
-            GL11.glBegin(GL11.GL_LINE_LOOP);
-            for (PointPoly point : this.points) {
-                if (point != null) {
-                    GL11.glVertex3d((double) point.coord.posX + 0.5D, (double) y + 1.0D, (double) point.coord.posZ + 0.5D);
+                    GL11.glVertex3d((double) point.coord.posX + 0.5D - offsetX, (double) y + 1.0D - offsetY, (double) point.coord.posZ + 0.5D - offsetZ);
                 }
             }
             GL11.glEnd();
@@ -111,9 +77,7 @@ public class PolygonRegion extends Region {
         PointPoly point = new PointPoly(this);
         point.coord = new ChunkCoordinates(x, y, z);
 
-        point.red = 0.2F;
-        point.green = 0.8F;
-        point.blue = 0.8F;
+        point.color = ModWECUI.colorPolygonPoint.getValue();
 
         if (id < this.points.size()) {
             this.points.set(id, point);

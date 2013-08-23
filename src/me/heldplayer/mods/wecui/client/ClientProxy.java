@@ -59,13 +59,15 @@ public class ClientProxy extends CommonProxy implements IConnectionHandler {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_FOG);
-        GL11.glTranslated(-offsetX, -offsetY, -offsetZ);
 
         if (selection != null) {
-            selection.render();
-        }
+            GL11.glLineWidth(3.0F);
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            selection.render(0.2F, offsetX, offsetY, offsetZ);
 
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            selection.render(0.8F, offsetX, offsetY, offsetZ);
+        }
 
         GL11.glDisable(GL11.GL_FOG);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
