@@ -46,8 +46,6 @@ public class ModWECUI extends HeldCoreMod {
     @Override
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
-
         Objects.log = event.getModLog();
 
         // Config
@@ -76,6 +74,8 @@ public class ModWECUI extends HeldCoreMod {
         this.config.addConfigKey(colorCylinderCenter);
         this.config.addConfigKey(colorCylinderOutline);
         this.config.addConfigKey(colorCylinderGrid);
+
+        super.preInit(event);
     }
 
     @Override
