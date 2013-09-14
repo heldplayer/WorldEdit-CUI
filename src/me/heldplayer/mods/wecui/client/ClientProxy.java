@@ -7,12 +7,9 @@ import me.heldplayer.mods.wecui.client.region.Region;
 import me.heldplayer.util.HeldCore.client.MC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.NetLoginHandler;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
@@ -20,23 +17,15 @@ import net.minecraftforge.event.world.WorldEvent;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ClientProxy extends CommonProxy implements IConnectionHandler {
+public class ClientProxy extends CommonProxy {
 
     public static Region selection;
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
-        NetworkRegistry.instance().registerConnectionHandler(this);
-    }
 
     @ForgeSubscribe
     public void onRenderWorldLast(RenderWorldLastEvent event) {
@@ -102,35 +91,15 @@ public class ClientProxy extends CommonProxy implements IConnectionHandler {
 
                         MC.getPlayer().sendChatMessage("/we cui");
                     }
+
+                    PotionEffect effect = new PotionEffect(Potion.nightVision.id, 0, 0, false);
+                    effect.setPotionDurationMax(true);
+                    MC.getPlayer().addPotionEffect(effect);
                 }
             }
         });
         thread.setDaemon(true);
         thread.start();
     }
-
-    @Override
-    public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {}
-
-    @Override
-    public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager) {
-        return null;
-    }
-
-    @Override
-    public void connectionOpened(NetHandler netClientHandler, String server, int port, INetworkManager manager) {
-
-        //selection = new CuboidRegion();
-
-    }
-
-    @Override
-    public void connectionOpened(NetHandler netClientHandler, MinecraftServer server, INetworkManager manager) {}
-
-    @Override
-    public void connectionClosed(INetworkManager manager) {}
-
-    @Override
-    public void clientLoggedIn(NetHandler clientHandler, INetworkManager manager, Packet1Login login) {}
 
 }
