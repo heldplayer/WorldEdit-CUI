@@ -3,6 +3,9 @@ package me.heldplayer.mods.wecui;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
+import java.nio.charset.Charset;
+
 import me.heldplayer.mods.wecui.client.ClientProxy;
 import me.heldplayer.mods.wecui.client.region.CuboidRegion;
 import me.heldplayer.mods.wecui.client.region.CylinderRegion;
@@ -27,6 +30,7 @@ public class PacketHandler {
     public PacketHandler(String channelName) {
         this.channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(channelName);
         this.channelName = channelName;
+        this.channel.register(this);
     }
 
     @SubscribeEvent
@@ -93,7 +97,10 @@ public class PacketHandler {
 
     public void sendData(String data) {
         ByteBuf buffer = Unpooled.buffer();
-        buffer.writeBytes(data.getBytes());
+        final Charset UTF_8_CHARSET = Charset.forName("UTF-8");
+        byte[] bytes = data.getBytes(UTF_8_CHARSET);
+        buffer.capacity(bytes.length);
+        buffer.writeBytes(bytes);
         FMLProxyPacket packet = new FMLProxyPacket(buffer, channelName);
         channel.sendToServer(packet);
     }

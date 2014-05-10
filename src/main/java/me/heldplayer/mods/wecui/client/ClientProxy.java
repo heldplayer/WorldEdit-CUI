@@ -87,8 +87,7 @@ public class ClientProxy extends CommonProxy {
                     //Packet250CustomPayload packet = new Packet250CustomPayload("WECUI", "v|3".getBytes());
                     // FMLClientHandler.instance().sendPacket(packet);
                     ModWECUI.packetHandler.sendData("v|3");
-
-                    //MC.getPlayer().sendChatMessage("/we cui");
+                    MC.getPlayer().sendChatMessage("/we cui");
                     // }
 
                     PotionEffect effect = new PotionEffect(Potion.nightVision.id, 0, 0, false);
