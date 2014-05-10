@@ -3,8 +3,8 @@ package me.heldplayer.mods.wecui.client.region;
 
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.Color;
-import me.heldplayer.util.HeldCore.MathHelper;
 import net.minecraft.util.ChunkCoordinates;
+import net.specialattack.forge.core.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
@@ -65,7 +65,7 @@ public class EllipsoidRegion extends Region {
         for (int y = -radiusY; y < radiusY; y++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
             for (int i = 0; i <= 90; i++) {
-                float angle = (float) i * 4.0F / 90.0F;
+                float angle = i * 4.0F / 90.0F;
                 double x = this.radiusX * MathHelper.cos(angle) * Math.cos(Math.asin(y / this.radiusY));
                 double z = this.radiusZ * MathHelper.sin(angle) * Math.cos(Math.asin(y / this.radiusY));
 
@@ -80,7 +80,7 @@ public class EllipsoidRegion extends Region {
         for (int x = -radiusX; x < radiusX; x++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
             for (int i = 0; i <= 90; i++) {
-                float angle = (float) i * 4.0F / 90.0F;
+                float angle = i * 4.0F / 90.0F;
                 double y = this.radiusY * MathHelper.cos(angle) * Math.sin(Math.acos(x / this.radiusX));
                 double z = this.radiusZ * MathHelper.sin(angle) * Math.sin(Math.acos(x / this.radiusX));
 
@@ -95,7 +95,7 @@ public class EllipsoidRegion extends Region {
         for (int z = -radiusZ; z < radiusZ; z++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
             for (int i = 0; i <= 90; i++) {
-                float angle = (float) i * 4.0F / 90.0F;
+                float angle = i * 4.0F / 90.0F;
                 double x = this.radiusX * MathHelper.sin(angle) * Math.sin(Math.acos(z / this.radiusZ));
                 double y = this.radiusY * MathHelper.cos(angle) * Math.sin(Math.acos(z / this.radiusZ));
 

@@ -2,23 +2,20 @@
 package me.heldplayer.mods.wecui.client;
 
 import me.heldplayer.mods.wecui.CommonProxy;
+import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.region.NullRegion;
 import me.heldplayer.mods.wecui.client.region.Region;
-import me.heldplayer.util.HeldCore.client.MC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
+import net.specialattack.forge.core.client.MC;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,15 +24,15 @@ public class ClientProxy extends CommonProxy {
 
     public static Region selection;
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         Minecraft.getMinecraft().mcProfiler.startSection("WECUI");
 
         EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
-        double offsetX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) event.partialTicks;
-        double offsetY = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) event.partialTicks;
-        double offsetZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) event.partialTicks;
+        double offsetX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
+        double offsetY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;
+        double offsetZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks;
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -49,13 +46,13 @@ public class ClientProxy extends CommonProxy {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_FOG);
 
-        if (selection != null) {
+        if (ClientProxy.selection != null) {
             GL11.glLineWidth(3.0F);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            selection.render(0.2F, offsetX, offsetY, offsetZ);
+            ClientProxy.selection.render(0.2F, offsetX, offsetY, offsetZ);
 
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            selection.render(0.8F, offsetX, offsetY, offsetZ);
+            ClientProxy.selection.render(0.8F, offsetX, offsetY, offsetZ);
         }
 
         GL11.glDisable(GL11.GL_FOG);
@@ -71,9 +68,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getMinecraft().mcProfiler.endSection();
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void onWorldLoad(final WorldEvent.Load event) {
-        selection = new NullRegion();
+        ClientProxy.selection = new NullRegion();
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -85,12 +82,14 @@ public class ClientProxy extends CommonProxy {
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if (NetworkRegistry.instance().isChannelActive("WECUI", (Player) MC.getPlayer())) {
-                        Packet250CustomPayload packet = new Packet250CustomPayload("WECUI", "v|3".getBytes());
-                        FMLClientHandler.instance().sendPacket(packet);
 
-                        MC.getPlayer().sendChatMessage("/we cui");
-                    }
+                    // if (NetworkRegistry.INSTANCE.isChannelActive("WECUI")) {
+                    //Packet250CustomPayload packet = new Packet250CustomPayload("WECUI", "v|3".getBytes());
+                    // FMLClientHandler.instance().sendPacket(packet);
+                    ModWECUI.packetHandler.sendData("v|3");
+
+                    //MC.getPlayer().sendChatMessage("/we cui");
+                    // }
 
                     PotionEffect effect = new PotionEffect(Potion.nightVision.id, 0, 0, false);
                     effect.setPotionDurationMax(true);

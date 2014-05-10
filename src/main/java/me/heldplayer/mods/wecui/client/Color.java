@@ -1,7 +1,7 @@
 
 package me.heldplayer.mods.wecui.client;
 
-import me.heldplayer.util.HeldCore.config.IConfigurable;
+import net.specialattack.forge.core.config.IConfigurable;
 
 public class Color implements IConfigurable {
 
@@ -22,9 +22,9 @@ public class Color implements IConfigurable {
 
     public Color(int full) {
         this.full = full;
-        this.red = (float) ((full >> 16) & 0xFF) / 255.0F;
-        this.green = (float) ((full >> 8) & 0xFF) / 255.0F;
-        this.blue = (float) (full & 0xFF) / 255.0F;
+        this.red = ((full >> 16) & 0xFF) / 255.0F;
+        this.green = ((full >> 8) & 0xFF) / 255.0F;
+        this.blue = (full & 0xFF) / 255.0F;
     }
 
     @Override

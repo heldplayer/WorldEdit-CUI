@@ -3,9 +3,9 @@ package me.heldplayer.mods.wecui.client.region;
 
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.Color;
-import me.heldplayer.util.HeldCore.client.RenderHelper;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
+import net.specialattack.forge.core.client.RenderHelper;
 
 import org.lwjgl.opengl.GL11;
 
@@ -35,10 +35,10 @@ public class CuboidRegion extends Region {
 
         if (this.first.isValid() && this.second.isValid()) {
             GL11.glColor4f(this.outline.red, this.outline.green, this.outline.blue, opacity);
-            renderOutline(offsetX, offsetY, offsetZ);
+            this.renderOutline(offsetX, offsetY, offsetZ);
 
             GL11.glColor4f(this.grid.red, this.grid.green, this.grid.blue, opacity);
-            renderGrid(offsetX, offsetY, offsetZ);
+            this.renderGrid(offsetX, offsetY, offsetZ);
         }
     }
 
@@ -51,7 +51,7 @@ public class CuboidRegion extends Region {
         int maxX = this.first.coord.posX > this.second.coord.posX ? this.first.coord.posX + 1 : this.second.coord.posX + 1;
         int maxY = this.first.coord.posY > this.second.coord.posY ? this.first.coord.posY + 1 : this.second.coord.posY + 1;
         int maxZ = this.first.coord.posZ > this.second.coord.posZ ? this.first.coord.posZ + 1 : this.second.coord.posZ + 1;
-        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox((double) minX, (double) minY, (double) minZ, (double) maxX, (double) maxY, (double) maxZ).expand(offset, offset, offset).offset(-offsetX, -offsetY, -offsetZ);
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ).expand(offset, offset, offset).offset(-offsetX, -offsetY, -offsetZ);
 
         RenderHelper.drawBox(aabb);
     }
@@ -68,26 +68,26 @@ public class CuboidRegion extends Region {
 
         for (int x = minX + 1; x < maxX; x++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
-            GL11.glVertex3d((double) x - offsetX, (double) minY - offset - offsetY, (double) minZ - offset - offsetZ);
-            GL11.glVertex3d((double) x - offsetX, (double) minY - offset - offsetY, (double) maxZ + offset - offsetZ);
-            GL11.glVertex3d((double) x - offsetX, (double) maxY + offset - offsetY, (double) maxZ + offset - offsetZ);
-            GL11.glVertex3d((double) x - offsetX, (double) maxY + offset - offsetY, (double) minZ - offset - offsetZ);
+            GL11.glVertex3d(x - offsetX, minY - offset - offsetY, minZ - offset - offsetZ);
+            GL11.glVertex3d(x - offsetX, minY - offset - offsetY, maxZ + offset - offsetZ);
+            GL11.glVertex3d(x - offsetX, maxY + offset - offsetY, maxZ + offset - offsetZ);
+            GL11.glVertex3d(x - offsetX, maxY + offset - offsetY, minZ - offset - offsetZ);
             GL11.glEnd();
         }
         for (int y = minY + 1; y < maxY; y++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
-            GL11.glVertex3d((double) minX - offset - offsetX, y - offsetY, (double) minZ - offset - offsetZ);
-            GL11.glVertex3d((double) minX - offset - offsetX, y - offsetY, (double) maxZ + offset - offsetZ);
-            GL11.glVertex3d((double) maxX + offset - offsetX, y - offsetY, (double) maxZ + offset - offsetZ);
-            GL11.glVertex3d((double) maxX + offset - offsetX, y - offsetY, (double) minZ - offset - offsetZ);
+            GL11.glVertex3d(minX - offset - offsetX, y - offsetY, minZ - offset - offsetZ);
+            GL11.glVertex3d(minX - offset - offsetX, y - offsetY, maxZ + offset - offsetZ);
+            GL11.glVertex3d(maxX + offset - offsetX, y - offsetY, maxZ + offset - offsetZ);
+            GL11.glVertex3d(maxX + offset - offsetX, y - offsetY, minZ - offset - offsetZ);
             GL11.glEnd();
         }
         for (int z = minZ + 1; z < maxZ; z++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
-            GL11.glVertex3d((double) minX - offset - offsetX, (double) minY - offset - offsetY, z - offsetZ);
-            GL11.glVertex3d((double) maxX + offset - offsetX, (double) minY - offset - offsetY, z - offsetZ);
-            GL11.glVertex3d((double) maxX + offset - offsetX, (double) maxY + offset - offsetY, z - offsetZ);
-            GL11.glVertex3d((double) minX - offset - offsetX, (double) maxY + offset - offsetY, z - offsetZ);
+            GL11.glVertex3d(minX - offset - offsetX, minY - offset - offsetY, z - offsetZ);
+            GL11.glVertex3d(maxX + offset - offsetX, minY - offset - offsetY, z - offsetZ);
+            GL11.glVertex3d(maxX + offset - offsetX, maxY + offset - offsetY, z - offsetZ);
+            GL11.glVertex3d(minX - offset - offsetX, maxY + offset - offsetY, z - offsetZ);
             GL11.glEnd();
         }
     }

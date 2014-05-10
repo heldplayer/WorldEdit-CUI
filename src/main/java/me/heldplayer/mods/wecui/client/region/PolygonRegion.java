@@ -35,10 +35,10 @@ public class PolygonRegion extends Region {
         }
 
         GL11.glColor4f(this.outline.red, this.outline.green, this.outline.blue, opacity);
-        renderOutline(offsetX, offsetY, offsetZ);
+        this.renderOutline(offsetX, offsetY, offsetZ);
 
         GL11.glColor4f(this.grid.red, this.grid.green, this.grid.blue, opacity);
-        renderGrid(offsetX, offsetY, offsetZ);
+        this.renderGrid(offsetX, offsetY, offsetZ);
     }
 
     private void renderOutline(double offsetX, double offsetY, double offsetZ) {
@@ -46,7 +46,7 @@ public class PolygonRegion extends Region {
         GL11.glBegin(GL11.GL_LINE_LOOP);
         for (PointPoly point : this.points) {
             if (point != null) {
-                GL11.glVertex3d((double) point.coord.posX + 0.5D - offsetX, this.min - offset - offsetY, (double) point.coord.posZ + 0.5D - offsetZ);
+                GL11.glVertex3d(point.coord.posX + 0.5D - offsetX, this.min - offset - offsetY, point.coord.posZ + 0.5D - offsetZ);
             }
         }
         GL11.glEnd();
@@ -54,7 +54,7 @@ public class PolygonRegion extends Region {
         GL11.glBegin(GL11.GL_LINE_LOOP);
         for (PointPoly point : this.points) {
             if (point != null) {
-                GL11.glVertex3d((double) point.coord.posX + 0.5D - offsetX, this.max + 1.0D + offset - offsetY, (double) point.coord.posZ + 0.5D - offsetZ);
+                GL11.glVertex3d(point.coord.posX + 0.5D - offsetX, this.max + 1.0D + offset - offsetY, point.coord.posZ + 0.5D - offsetZ);
             }
         }
         GL11.glEnd();
@@ -65,7 +65,7 @@ public class PolygonRegion extends Region {
             GL11.glBegin(GL11.GL_LINE_LOOP);
             for (PointPoly point : this.points) {
                 if (point != null) {
-                    GL11.glVertex3d((double) point.coord.posX + 0.5D - offsetX, (double) y + 1.0D - offsetY, (double) point.coord.posZ + 0.5D - offsetZ);
+                    GL11.glVertex3d(point.coord.posX + 0.5D - offsetX, y + 1.0D - offsetY, point.coord.posZ + 0.5D - offsetZ);
                 }
             }
             GL11.glEnd();

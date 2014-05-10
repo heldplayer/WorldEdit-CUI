@@ -3,8 +3,8 @@ package me.heldplayer.mods.wecui.client.region;
 
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.Color;
-import me.heldplayer.util.HeldCore.MathHelper;
 import net.minecraft.util.ChunkCoordinates;
+import net.specialattack.forge.core.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
@@ -44,7 +44,7 @@ public class CylinderRegion extends Region {
         for (int y = this.min; y <= this.max + 1; y++) {
             GL11.glBegin(GL11.GL_LINE_LOOP);
             for (int i = 0; i <= 90; i++) {
-                float angle = (float) i * 4.0F / 90.0F;
+                float angle = i * 4.0F / 90.0F;
                 double x = this.radiusX * MathHelper.cos(angle);
                 double z = this.radiusZ * MathHelper.sin(angle);
 

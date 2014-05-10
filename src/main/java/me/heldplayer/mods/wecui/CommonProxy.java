@@ -1,14 +1,14 @@
 
 package me.heldplayer.mods.wecui;
 
-import me.heldplayer.util.HeldCore.HeldCoreProxy;
 import net.minecraftforge.common.MinecraftForge;
+import net.specialattack.forge.core.SpACoreProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 
-public class CommonProxy extends HeldCoreProxy {
+public class CommonProxy extends SpACoreProxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {

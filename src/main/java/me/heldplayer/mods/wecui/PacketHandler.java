@@ -1,24 +1,40 @@
 
 package me.heldplayer.mods.wecui;
 
-import java.util.logging.Level;
-
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import me.heldplayer.mods.wecui.client.ClientProxy;
 import me.heldplayer.mods.wecui.client.region.CuboidRegion;
 import me.heldplayer.mods.wecui.client.region.CylinderRegion;
 import me.heldplayer.mods.wecui.client.region.EllipsoidRegion;
 import me.heldplayer.mods.wecui.client.region.NullRegion;
 import me.heldplayer.mods.wecui.client.region.PolygonRegion;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import cpw.mods.fml.common.network.IPacketHandler;
-import cpw.mods.fml.common.network.Player;
+import net.specialattack.forge.core.Objects;
 
-public class PacketHandler implements IPacketHandler {
+import org.apache.logging.log4j.Level;
 
-    @Override
-    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
-        String data = new String(packet.data);
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+
+public class PacketHandler {
+
+    private final FMLEventChannel channel;
+    private final String channelName;
+
+    public PacketHandler(String channelName) {
+        this.channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(channelName);
+        this.channelName = channelName;
+    }
+
+    @SubscribeEvent
+    public void onClientCustomPacket(ClientCustomPacketEvent event) {
+        ByteBuf buffer = event.packet.payload();
+        byte[] bytes = new byte[buffer.readableBytes()];
+        buffer.readBytes(bytes);
+        String data = new String(bytes);
         Objects.log.log(Level.INFO, data);
         String[] args = data.split("\\|");
 
@@ -73,6 +89,13 @@ public class PacketHandler implements IPacketHandler {
             ClientProxy.selection.setPoint(0, x, y, z);
             ClientProxy.selection.setRadius(radiusX, 0, radiusZ);
         }
+    }
+
+    public void sendData(String data) {
+        ByteBuf buffer = Unpooled.buffer();
+        buffer.writeBytes(data.getBytes());
+        FMLProxyPacket packet = new FMLProxyPacket(buffer, channelName);
+        channel.sendToServer(packet);
     }
 
 }

@@ -1,9 +1,9 @@
 
 package me.heldplayer.mods.wecui;
 
-import java.util.logging.Logger;
+import net.specialattack.forge.core.ModInfo;
 
-import me.heldplayer.util.HeldCore.ModInfo;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ImRecording mod Objects
@@ -18,7 +18,7 @@ public final class Objects {
     public static final String CLIENT_PROXY = "me.heldplayer.mods.wecui.client.ClientProxy";
     public static final String SERVER_PROXY = "me.heldplayer.mods.wecui.CommonProxy";
 
-    public static final ModInfo MOD_INFO = new ModInfo(MOD_ID, MOD_NAME, MOD_VERSION);
+    public static final ModInfo MOD_INFO = new ModInfo(Objects.MOD_ID, Objects.MOD_NAME, Objects.MOD_VERSION);
 
     public static Logger log;
 
