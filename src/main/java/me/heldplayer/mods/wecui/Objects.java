@@ -13,12 +13,11 @@ public final class Objects {
 
     public static final String MOD_ID = "WorldEdit-CUI";
     public static final String MOD_NAME = "WorldEdit Client User Interface";
-    public static final String MOD_VERSION = "@VERSION@";
     public static final String MOD_CHANNEL = "WECUI";
     public static final String CLIENT_PROXY = "me.heldplayer.mods.wecui.client.ClientProxy";
     public static final String SERVER_PROXY = "me.heldplayer.mods.wecui.CommonProxy";
 
-    public static final ModInfo MOD_INFO = new ModInfo(Objects.MOD_ID, Objects.MOD_NAME, Objects.MOD_VERSION);
+    public static final ModInfo MOD_INFO = new ModInfo(Objects.MOD_ID, Objects.MOD_NAME);
 
     public static Logger log;
 

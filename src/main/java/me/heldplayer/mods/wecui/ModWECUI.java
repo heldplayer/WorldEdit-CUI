@@ -17,7 +17,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = Objects.MOD_ID, name = Objects.MOD_NAME, version = Objects.MOD_VERSION)
+@Mod(modid = Objects.MOD_ID, name = Objects.MOD_NAME)
 public class ModWECUI extends SpACoreMod {
 
     @Instance(value = Objects.MOD_ID)
