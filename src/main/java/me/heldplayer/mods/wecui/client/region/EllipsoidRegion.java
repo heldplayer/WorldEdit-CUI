@@ -4,7 +4,7 @@ package me.heldplayer.mods.wecui.client.region;
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.Color;
 import net.minecraft.util.ChunkCoordinates;
-import net.specialattack.forge.core.MathHelper;
+import net.specialattack.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
