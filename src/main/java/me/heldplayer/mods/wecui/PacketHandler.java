@@ -101,8 +101,8 @@ public class PacketHandler {
         byte[] bytes = data.getBytes(UTF_8_CHARSET);
         buffer.capacity(bytes.length);
         buffer.writeBytes(bytes);
-        FMLProxyPacket packet = new FMLProxyPacket(buffer, channelName);
-        channel.sendToServer(packet);
+        FMLProxyPacket packet = new FMLProxyPacket(buffer, this.channelName);
+        this.channel.sendToServer(packet);
     }
 
 }
