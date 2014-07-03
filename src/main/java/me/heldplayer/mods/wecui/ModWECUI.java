@@ -7,6 +7,7 @@ import net.specialattack.forge.core.ModInfo;
 import net.specialattack.forge.core.SpACoreMod;
 import net.specialattack.forge.core.SpACoreProxy;
 import net.specialattack.forge.core.config.Config;
+import net.specialattack.forge.core.config.ConfigCategory;
 import net.specialattack.forge.core.config.ConfigValue;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -42,6 +43,7 @@ public class ModWECUI extends SpACoreMod {
     public static ConfigValue<Color> colorCylinderOutline;
     public static ConfigValue<Color> colorCylinderGrid;
 
+    @SuppressWarnings("rawtypes")
     @Override
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -50,31 +52,33 @@ public class ModWECUI extends SpACoreMod {
         ModWECUI.packetHandler = new PacketHandler("WECUI");
 
         // Config
-        ModWECUI.colorCuboidPoint1 = new ConfigValue<Color>("colorCuboidPoint1", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.2F, 0.8F, 0.2F), "");
-        ModWECUI.colorCuboidPoint2 = new ConfigValue<Color>("colorCuboidPoint2", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.2F, 0.2F, 0.8F), "");
-        ModWECUI.colorCuboidOutline = new ConfigValue<Color>("colorCuboidOutline", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.3F, 0.3F), "");
-        ModWECUI.colorCuboidGrid = new ConfigValue<Color>("colorCuboidGrid", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.2F, 0.2F), "");
-        ModWECUI.colorPolygonPoint = new ConfigValue<Color>("colorPolygonPoint", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.2F, 0.8F, 0.8F), "");
-        ModWECUI.colorPolygonOutline = new ConfigValue<Color>("colorPolygonOutline", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.3F, 0.3F), "");
-        ModWECUI.colorPolygonGrid = new ConfigValue<Color>("colorPolygonGrid", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.2F, 0.2F), "");
-        ModWECUI.colorEllipsoidCenter = new ConfigValue<Color>("colorEllipsoidCenter", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.8F, 0.2F), "");
-        ModWECUI.colorEllipsoidGrid = new ConfigValue<Color>("colorEllipsoidGrid", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.3F, 0.3F), "");
-        ModWECUI.colorCylinderCenter = new ConfigValue<Color>("colorCylinderCenter", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.2F, 0.8F), "");
-        ModWECUI.colorCylinderOutline = new ConfigValue<Color>("colorCylinderOutline", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.3F, 0.3F), "");
-        ModWECUI.colorCylinderGrid = new ConfigValue<Color>("colorCylinderGrid", Configuration.CATEGORY_GENERAL, Side.CLIENT, new Color(0.8F, 0.2F, 0.2F), "");
+        ConfigCategory<?> category = new ConfigCategory(Configuration.CATEGORY_GENERAL, "config.worldedit-cui.category.general", null, "General mod settings");
+        ModWECUI.colorCuboidPoint1 = new ConfigValue<Color>("colorCuboidPoint1", "config.worldedit-cui.key.colorCuboidPoint1", Side.CLIENT, new Color(0.2F, 0.8F, 0.2F), "");
+        ModWECUI.colorCuboidPoint2 = new ConfigValue<Color>("colorCuboidPoint2", "config.worldedit-cui.key.colorCuboidPoint2", Side.CLIENT, new Color(0.2F, 0.2F, 0.8F), "");
+        ModWECUI.colorCuboidOutline = new ConfigValue<Color>("colorCuboidOutline", "config.worldedit-cui.key.colorCuboidOutline", Side.CLIENT, new Color(0.8F, 0.3F, 0.3F), "");
+        ModWECUI.colorCuboidGrid = new ConfigValue<Color>("colorCuboidGrid", "config.worldedit-cui.key.colorCuboidGrid", Side.CLIENT, new Color(0.8F, 0.2F, 0.2F), "");
+        ModWECUI.colorPolygonPoint = new ConfigValue<Color>("colorPolygonPoint", "config.worldedit-cui.key.colorPolygonPoint", Side.CLIENT, new Color(0.2F, 0.8F, 0.8F), "");
+        ModWECUI.colorPolygonOutline = new ConfigValue<Color>("colorPolygonOutline", "config.worldedit-cui.key.colorPolygonOutline", Side.CLIENT, new Color(0.8F, 0.3F, 0.3F), "");
+        ModWECUI.colorPolygonGrid = new ConfigValue<Color>("colorPolygonGrid", "config.worldedit-cui.key.colorPolygonGrid", Side.CLIENT, new Color(0.8F, 0.2F, 0.2F), "");
+        ModWECUI.colorEllipsoidCenter = new ConfigValue<Color>("colorEllipsoidCenter", "config.worldedit-cui.key.colorEllipsoidCenter", Side.CLIENT, new Color(0.8F, 0.8F, 0.2F), "");
+        ModWECUI.colorEllipsoidGrid = new ConfigValue<Color>("colorEllipsoidGrid", "config.worldedit-cui.key.colorEllipsoidGrid", Side.CLIENT, new Color(0.8F, 0.3F, 0.3F), "");
+        ModWECUI.colorCylinderCenter = new ConfigValue<Color>("colorCylinderCenter", "config.worldedit-cui.key.colorCylinderCenter", Side.CLIENT, new Color(0.8F, 0.2F, 0.8F), "");
+        ModWECUI.colorCylinderOutline = new ConfigValue<Color>("colorCylinderOutline", "config.worldedit-cui.key.colorCylinderOutline", Side.CLIENT, new Color(0.8F, 0.3F, 0.3F), "");
+        ModWECUI.colorCylinderGrid = new ConfigValue<Color>("colorCylinderGrid", "config.worldedit-cui.key.colorCylinderGrid", Side.CLIENT, new Color(0.8F, 0.2F, 0.2F), "");
         this.config = new Config(event.getSuggestedConfigurationFile());
-        this.config.addConfigKey(ModWECUI.colorCuboidPoint1);
-        this.config.addConfigKey(ModWECUI.colorCuboidPoint2);
-        this.config.addConfigKey(ModWECUI.colorCuboidOutline);
-        this.config.addConfigKey(ModWECUI.colorCuboidGrid);
-        this.config.addConfigKey(ModWECUI.colorPolygonPoint);
-        this.config.addConfigKey(ModWECUI.colorPolygonOutline);
-        this.config.addConfigKey(ModWECUI.colorPolygonGrid);
-        this.config.addConfigKey(ModWECUI.colorEllipsoidCenter);
-        this.config.addConfigKey(ModWECUI.colorEllipsoidGrid);
-        this.config.addConfigKey(ModWECUI.colorCylinderCenter);
-        this.config.addConfigKey(ModWECUI.colorCylinderOutline);
-        this.config.addConfigKey(ModWECUI.colorCylinderGrid);
+        this.config.addCategory(category);
+        category.addValue(ModWECUI.colorCuboidPoint1);
+        category.addValue(ModWECUI.colorCuboidPoint2);
+        category.addValue(ModWECUI.colorCuboidOutline);
+        category.addValue(ModWECUI.colorCuboidGrid);
+        category.addValue(ModWECUI.colorPolygonPoint);
+        category.addValue(ModWECUI.colorPolygonOutline);
+        category.addValue(ModWECUI.colorPolygonGrid);
+        category.addValue(ModWECUI.colorEllipsoidCenter);
+        category.addValue(ModWECUI.colorEllipsoidGrid);
+        category.addValue(ModWECUI.colorCylinderCenter);
+        category.addValue(ModWECUI.colorCylinderOutline);
+        category.addValue(ModWECUI.colorCylinderGrid);
 
         super.preInit(event);
     }

@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class Objects {
 
-    public static final String MOD_ID = "WorldEdit-CUI";
+    public static final String MOD_ID = "worldedit-cui";
     public static final String MOD_NAME = "WorldEdit Client User Interface";
     public static final String MOD_CHANNEL = "WECUI";
     public static final String CLIENT_PROXY = "me.heldplayer.mods.wecui.client.ClientProxy";

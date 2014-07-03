@@ -48,4 +48,9 @@ public class Color implements IConfigurable {
         }
     }
 
+    @Override
+    public String[] getValidValues() {
+        return null;
+    }
+
 }
