@@ -1,23 +1,20 @@
-
 package me.heldplayer.mods.wecui.client.region;
 
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.Color;
 import net.minecraft.util.ChunkCoordinates;
 import net.specialattack.util.MathHelper;
-
 import org.lwjgl.opengl.GL11;
 
 public class CylinderRegion extends Region {
 
+    public Color outline;
+    public Color grid;
+    protected int min;
+    protected int max;
     private Point center;
     private double radiusX;
     private double radiusZ;
-    protected int min;
-    protected int max;
-
-    public Color outline;
-    public Color grid;
 
     public CylinderRegion() {
         this.center = new Point();

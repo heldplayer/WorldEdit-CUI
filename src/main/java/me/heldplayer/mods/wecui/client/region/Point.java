@@ -1,11 +1,9 @@
-
 package me.heldplayer.mods.wecui.client.region;
 
 import me.heldplayer.mods.wecui.client.Color;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.specialattack.forge.core.client.RenderHelper;
-
 import org.lwjgl.opengl.GL11;
 
 public class Point {

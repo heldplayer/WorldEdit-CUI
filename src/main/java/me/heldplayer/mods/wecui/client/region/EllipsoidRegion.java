@@ -1,21 +1,18 @@
-
 package me.heldplayer.mods.wecui.client.region;
 
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.Color;
 import net.minecraft.util.ChunkCoordinates;
 import net.specialattack.util.MathHelper;
-
 import org.lwjgl.opengl.GL11;
 
 public class EllipsoidRegion extends Region {
 
+    public Color grid;
     private Point center;
     private double radiusX;
     private double radiusY;
     private double radiusZ;
-
-    public Color grid;
 
     public EllipsoidRegion() {
         this.center = new Point();
@@ -40,8 +37,7 @@ public class EllipsoidRegion extends Region {
     public void setPoint(int id, int x, int y, int z) {
         if (id == 0) {
             this.center.coord = new ChunkCoordinates(x, y, z);
-        }
-        else if (id == 1) {
+        } else if (id == 1) {
             if (x == 0 && y == 0 && z == 0) {
                 this.center.coord = null;
             }
@@ -58,7 +54,8 @@ public class EllipsoidRegion extends Region {
     }
 
     @Override
-    public void setMinMax(int min, int max) {}
+    public void setMinMax(int min, int max) {
+    }
 
     private void drawXZPlane(double offsetX, double offsetY, double offsetZ) {
         int radiusY = net.minecraft.util.MathHelper.ceiling_double_int(this.radiusY);

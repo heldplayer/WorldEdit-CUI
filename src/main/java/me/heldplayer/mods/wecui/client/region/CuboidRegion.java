@@ -1,4 +1,3 @@
-
 package me.heldplayer.mods.wecui.client.region;
 
 import me.heldplayer.mods.wecui.ModWECUI;
@@ -6,16 +5,14 @@ import me.heldplayer.mods.wecui.client.Color;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.specialattack.forge.core.client.RenderHelper;
-
 import org.lwjgl.opengl.GL11;
 
 public class CuboidRegion extends Region {
 
-    private Point first;
-    private Point second;
-
     public Color outline;
     public Color grid;
+    private Point first;
+    private Point second;
 
     public CuboidRegion() {
         this.first = new Point();
@@ -96,16 +93,17 @@ public class CuboidRegion extends Region {
     public void setPoint(int id, int x, int y, int z) {
         if (id == 0) {
             this.first.coord = new ChunkCoordinates(x, y, z);
-        }
-        else if (id == 1) {
+        } else if (id == 1) {
             this.second.coord = new ChunkCoordinates(x, y, z);
         }
     }
 
     @Override
-    public void setRadius(double radiusX, double radiusY, double radiusZ) {}
+    public void setRadius(double radiusX, double radiusY, double radiusZ) {
+    }
 
     @Override
-    public void setMinMax(int min, int max) {}
+    public void setMinMax(int min, int max) {
+    }
 
 }

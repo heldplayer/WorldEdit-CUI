@@ -1,6 +1,8 @@
-
 package me.heldplayer.mods.wecui.client;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import me.heldplayer.mods.wecui.CommonProxy;
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.region.NullRegion;
@@ -12,12 +14,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.specialattack.forge.core.client.MC;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -73,13 +70,13 @@ public class ClientProxy extends CommonProxy {
         ClientProxy.selection = new NullRegion();
 
         Thread thread = new Thread(new Runnable() {
+
             @Override
             public void run() {
                 if (event.world.isRemote) {
                     try {
                         Thread.sleep(1000L);
-                    }
-                    catch (InterruptedException e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 

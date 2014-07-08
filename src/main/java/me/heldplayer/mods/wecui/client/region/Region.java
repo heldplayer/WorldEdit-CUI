@@ -1,4 +1,3 @@
-
 package me.heldplayer.mods.wecui.client.region;
 
 import cpw.mods.fml.relauncher.Side;

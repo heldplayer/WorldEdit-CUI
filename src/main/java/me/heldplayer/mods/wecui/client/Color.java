@@ -1,4 +1,3 @@
-
 package me.heldplayer.mods.wecui.client;
 
 import net.specialattack.forge.core.config.IConfigurable;
@@ -41,8 +40,7 @@ public class Color implements IConfigurable {
         try {
             int value = Integer.parseInt(serialized, 16);
             return new Color(value & 0xFFFFFF);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.fillInStackTrace();
             throw new RuntimeException(e);
         }

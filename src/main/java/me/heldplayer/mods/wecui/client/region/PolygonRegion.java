@@ -1,22 +1,19 @@
-
 package me.heldplayer.mods.wecui.client.region;
-
-import java.util.ArrayList;
 
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.Color;
 import net.minecraft.util.ChunkCoordinates;
-
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
 
 public class PolygonRegion extends Region {
 
-    private ArrayList<PointPoly> points;
-    protected int min;
-    protected int max;
-
     public Color outline;
     public Color grid;
+    protected int min;
+    protected int max;
+    private ArrayList<PointPoly> points;
 
     public PolygonRegion() {
         this.points = new ArrayList<PointPoly>();
@@ -81,8 +78,7 @@ public class PolygonRegion extends Region {
 
         if (id < this.points.size()) {
             this.points.set(id, point);
-        }
-        else {
+        } else {
             for (int i = 0; i < id - this.points.size(); i++) {
                 this.points.add(null);
             }
@@ -91,7 +87,8 @@ public class PolygonRegion extends Region {
     }
 
     @Override
-    public void setRadius(double radiusX, double radiusY, double radiusZ) {}
+    public void setRadius(double radiusX, double radiusY, double radiusZ) {
+    }
 
     @Override
     public void setMinMax(int min, int max) {

@@ -1,14 +1,5 @@
-
 package me.heldplayer.mods.wecui;
 
-import me.heldplayer.mods.wecui.client.Color;
-import net.minecraftforge.common.config.Configuration;
-import net.specialattack.forge.core.ModInfo;
-import net.specialattack.forge.core.SpACoreMod;
-import net.specialattack.forge.core.SpACoreProxy;
-import net.specialattack.forge.core.config.Config;
-import net.specialattack.forge.core.config.ConfigCategory;
-import net.specialattack.forge.core.config.ConfigValue;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -17,6 +8,14 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
+import me.heldplayer.mods.wecui.client.Color;
+import net.minecraftforge.common.config.Configuration;
+import net.specialattack.forge.core.ModInfo;
+import net.specialattack.forge.core.SpACoreMod;
+import net.specialattack.forge.core.SpACoreProxy;
+import net.specialattack.forge.core.config.Config;
+import net.specialattack.forge.core.config.ConfigCategory;
+import net.specialattack.forge.core.config.ConfigValue;
 
 @Mod(modid = Objects.MOD_ID, name = Objects.MOD_NAME)
 public class ModWECUI extends SpACoreMod {
@@ -84,6 +83,16 @@ public class ModWECUI extends SpACoreMod {
     }
 
     @Override
+    public ModInfo getModInfo() {
+        return Objects.MOD_INFO;
+    }
+
+    @Override
+    public SpACoreProxy getProxy() {
+        return ModWECUI.proxy;
+    }
+
+    @Override
     @EventHandler
     public void init(FMLInitializationEvent event) {
         super.init(event);
@@ -93,16 +102,6 @@ public class ModWECUI extends SpACoreMod {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-    }
-
-    @Override
-    public ModInfo getModInfo() {
-        return Objects.MOD_INFO;
-    }
-
-    @Override
-    public SpACoreProxy getProxy() {
-        return ModWECUI.proxy;
     }
 
 }
