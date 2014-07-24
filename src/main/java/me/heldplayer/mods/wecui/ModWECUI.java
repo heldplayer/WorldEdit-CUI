@@ -92,16 +92,4 @@ public class ModWECUI extends SpACoreMod {
         return ModWECUI.proxy;
     }
 
-    @Override
-    @EventHandler
-    public void init(FMLInitializationEvent event) {
-        super.init(event);
-    }
-
-    @Override
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-        super.postInit(event);
-    }
-
 }
