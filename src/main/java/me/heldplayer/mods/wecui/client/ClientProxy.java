@@ -9,8 +9,6 @@ import me.heldplayer.mods.wecui.client.region.NullRegion;
 import me.heldplayer.mods.wecui.client.region.Region;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.specialattack.forge.core.client.MC;
@@ -86,10 +84,6 @@ public class ClientProxy extends CommonProxy {
                     ModWECUI.packetHandler.sendData("v|3");
                     MC.getPlayer().sendChatMessage("/we cui");
                     // }
-
-                    PotionEffect effect = new PotionEffect(Potion.nightVision.id, 0, 0, false);
-                    effect.setPotionDurationMax(true);
-                    MC.getPlayer().addPotionEffect(effect);
                 }
             }
         });

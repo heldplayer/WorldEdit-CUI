@@ -1,12 +1,20 @@
-[
-    {
-        "modid" : "WorldEdit-CUI",
-        "name" : "WorldEdit-CUI",
-        "description" : "WorldEdit User Interface in the world",
-        "version" : "${version}",
-        "authors": [
-            "heldplayer"
-        ],
-        "url" : "",
-    }
-]
+{
+    "modListVersion" : 2,
+    "modList" : [
+        {
+            "modid" : "WorldEdit-CUI",
+            "name" : "WorldEdit-CUI",
+            "description" : "WorldEdit User Interface in the world",
+            "version" : "${version}",
+            "mcversion" : "${minecraft_version}",
+            "authors": [
+                "heldplayer"
+            ],
+            "url" : "",
+            "useDependencyInformation" : true,
+            "requiredMods" : [ "spacoreforge", "spacore" ],
+            "dependencies" : [ "spacore" ],
+            "dependants" : []
+        }
+    ]
+}
