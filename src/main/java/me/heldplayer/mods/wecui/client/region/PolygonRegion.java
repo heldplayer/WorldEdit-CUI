@@ -1,11 +1,10 @@
 package me.heldplayer.mods.wecui.client.region;
 
+import java.util.ArrayList;
 import me.heldplayer.mods.wecui.ModWECUI;
 import me.heldplayer.mods.wecui.client.Color;
 import net.minecraft.util.ChunkCoordinates;
 import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
 
 public class PolygonRegion extends Region {
 

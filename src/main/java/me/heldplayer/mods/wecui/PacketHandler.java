@@ -7,12 +7,11 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import java.nio.charset.Charset;
 import me.heldplayer.mods.wecui.client.ClientProxy;
 import me.heldplayer.mods.wecui.client.region.*;
 import net.specialattack.forge.core.Objects;
 import org.apache.logging.log4j.Level;
-
-import java.nio.charset.Charset;
 
 public class PacketHandler {
 
